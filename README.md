@@ -39,11 +39,14 @@ This application is designed for educational and testing purposes only. It simul
 
 ### Method 1: Direct Python Execution
 1. **Clone or download** the repository
-2. **Install dependencies** (optional):
+   ```bash
+   git clone https://github.com/farooq9/ScreenlockerV2.git
+   ```
+3. **Install dependencies** (optional):
    ```bash
    pip install -r requirements.txt
    ```
-3. **Run the application**:
+4. **Run the application**:
    ```bash
    python screenlocker.py
    ```
@@ -116,11 +119,11 @@ Edit the text variables in the `setup_ui` method to customize displayed messages
 
 ```
 screenlockerAI/
-├── screenlocker.py          # Main application file with enhanced UI
+├── screenlocker.py         # Main application file with enhanced UI
 ├── modules.py              # Cross-platform system integration with registry persistence
-├── build.bat   # Cross-platform executable builder script
+├── build.bat               # Cross-platform executable builder script
 ├── requirements.txt        # Python dependencies
-└── README.md              # This comprehensive documentation
+└── README.md               # This comprehensive documentation
 
 ```
 
@@ -273,4 +276,5 @@ The developers of this software are **not responsible** for any misuse, damage, 
 4. **Maintain** the educational and security research focus
 
 **Remember**: This tool is for learning and authorized testing only. Use responsibly! 🔒
+
 
