@@ -2,6 +2,8 @@
 
 A cross-platform screen lock simulation application built with Python and Tkinter.
 
+![Demo Screenshot](https://github.com/farooq9/screenlockerV2/blob/main/demo.jpg?raw=true)
+
 ## ⚠️ **IMPORTANT DISCLAIMER**
 This application is designed for educational and testing purposes only. It simulates screen locking behavior and should only be used in controlled environments with proper authorization. The creators are not responsible for any misuse of this software.
 
@@ -276,5 +278,6 @@ The developers of this software are **not responsible** for any misuse, damage, 
 4. **Maintain** the educational and security research focus
 
 **Remember**: This tool is for learning and authorized testing only. Use responsibly! 🔒
+
 
 
