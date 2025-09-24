@@ -1,0 +1,15 @@
+# ScreenLocker Application Dependencies
+# =================================
+# Core dependencies for the ScreenLocker application
+
+# Windows-specific enhanced keyboard handling (optional)
+keyboard==0.13.5; platform_system=="Windows"
+
+# Executable building (required for build_executable.bat)
+pyinstaller>=4.10
+
+# Note: 
+# - keyboard module is Windows-specific for enhanced functionality
+# - On macOS and Linux, the application uses tkinter's built-in key handling
+# - tkinter is included with most Python installations
+# - pyinstaller is used by build_executable.bat to create standalone executables
