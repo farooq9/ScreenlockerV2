@@ -52,7 +52,7 @@ This application is designed for educational and testing purposes only. It simul
 1. **Use the provided batch script** to create platform-specific executables:
    ```bash
    # On Windows (creates .exe)
-   build_executable.bat
+   build.bat
 
    # The script will automatically detect your platform and create appropriate executable
    ```
@@ -118,10 +118,10 @@ Edit the text variables in the `setup_ui` method to customize displayed messages
 screenlockerAI/
 ├── screenlocker.py          # Main application file with enhanced UI
 ├── modules.py              # Cross-platform system integration with registry persistence
-├── build_executable.bat   # Cross-platform executable builder script
+├── build.bat   # Cross-platform executable builder script
 ├── requirements.txt        # Python dependencies
-├── README.md              # This comprehensive documentation
-└── config.ini             # Configuration file (optional)
+└── README.md              # This comprehensive documentation
+
 ```
 
 ## Security Considerations
@@ -189,7 +189,7 @@ The UI automatically adapts to:
 
 ## Building Executables
 
-The included `build_executable.bat` script provides **comprehensive executable creation**:
+The included `build.bat` script provides **comprehensive executable creation**:
 
 ### **Features**
 - **Auto-detection** of operating system
@@ -202,10 +202,10 @@ The included `build_executable.bat` script provides **comprehensive executable c
 ### **Usage**
 ```bash
 # Simply run the batch file
-build_executable.bat
+build.bat
 
 # Or with custom options
-build_executable.bat --onefile --windowed
+build.bat --onefile --windowed
 ```
 
 ## Legal Notice
@@ -263,7 +263,7 @@ The developers of this software are **not responsible** for any misuse, damage, 
 1. **Download** or clone the repository
 2. **Install Python 3.6+** if not already installed
 3. **Run** `python screenlocker.py` to test
-4. **Use** `build_executable.bat` to create standalone executable
+4. **Use** `build.bat` to create standalone executable
 5. **Test safely** in controlled environment only
 
 ### **For Developers**  
@@ -273,3 +273,4 @@ The developers of this software are **not responsible** for any misuse, damage, 
 4. **Maintain** the educational and security research focus
 
 **Remember**: This tool is for learning and authorized testing only. Use responsibly! 🔒
+
