@@ -167,19 +167,19 @@ set PYINSTALLER_CMD=pyinstaller %BUILD_FLAGS% --name="%APP_NAME%" --distpath="di
 
 :: Add platform-specific options
 if "%OS_TYPE%"=="Windows" (
-    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --add-data="modules.py;." --hidden-import=keyboard
+    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --hidden-import=keyboard
 )
 
 if "%OS_TYPE%"=="macOS" (
-    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --add-data="modules.py:." --hidden-import=subprocess
+    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --hidden-import=subprocess
 )
 
 if "%OS_TYPE%"=="Linux" (
-    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --add-data="modules.py:." --hidden-import=subprocess
+    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --hidden-import=subprocess
 )
 
 if "%OS_TYPE%"=="WSL" (
-    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --add-data="modules.py;." --hidden-import=keyboard
+    set PYINSTALLER_CMD=%PYINSTALLER_CMD% --hidden-import=keyboard
 )
 
 :: Add the main script
