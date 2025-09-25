@@ -62,7 +62,7 @@ ver | find "Windows" >nul
 if %errorlevel% equ 0 (
     set OS_TYPE=Windows
     set EXE_EXT=.exe
-    set BUILD_FLAGS=--onefile --windowed --console
+    set BUILD_FLAGS=--onefile --windowed --noconsole
     goto :os_detected
 )
 
@@ -354,3 +354,4 @@ echo - Corrupted source files
 echo - PyInstaller compatibility issues
 pause
 exit /b 1
+
