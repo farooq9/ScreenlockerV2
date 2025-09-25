@@ -229,34 +229,6 @@ This software is provided **"as is" without warranty**. Users are responsible fo
 - **Commercial use** without proper licensing
 - **Distribution** for illegal purposes
 
-## Contributing
-
-When contributing to this project, please:
-
-1. **Follow PEP 8** coding standards and Python best practices
-2. **Add appropriate error handling** with try-catch blocks
-3. **Test on multiple platforms** (Windows, macOS, Linux)  
-4. **Update documentation** as needed for new features
-5. **Maintain security focus** in all implementations
-6. **Use descriptive commit messages** and proper version control
-
-### **Development Setup**
-```bash
-# Clone the repository
-git clone <repository-url>
-
-# Install development dependencies  
-pip install -r requirements.txt
-pip install pyinstaller  # For executable building
-
-# Run tests (when available)
-python -m pytest tests/
-```
-
-## License
-
-This project is for **educational purposes only**. Please use responsibly and in accordance with local laws and regulations.
-
 ### **Disclaimer**
 The developers of this software are **not responsible** for any misuse, damage, or legal consequences arising from the use of this application. Users assume full responsibility for their actions when using this software.
 
@@ -278,6 +250,7 @@ The developers of this software are **not responsible** for any misuse, damage, 
 4. **Maintain** the educational and security research focus
 
 **Remember**: This tool is for learning and authorized testing only. Use responsibly! 🔒
+
 
 
 
